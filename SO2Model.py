@@ -207,19 +207,18 @@ statsModel.calculateCorrelationCoefficients_DV_vs_IVs(dataFrame)
 #Correlation IVs vs. IVs
 statsModel.calculateCorrelationCoefficients_IVs_vs_IVs(dataFrame)
 #Getting rid of some Variables and dropping 100 rows so that trainData and testData have same # of rows
-trainData3F = dataFrame.drop(['windDirection', 'timeOfDay', 'dayIndex', 'temperatureAtThirty'], axis = 1)
+trainData3F = dataFrame.drop(['windDirection', 'timeOfDay', 'dayIndex'], axis = 1)
 trainData3F = trainData3F[:200]
 #Let's also rename variables without using '.'
-trainData3F.columns = ['so2', 'carCount', 'windVelocity', 'temperatureAtOne']
+trainData3F.columns = ['so2', 'carCount', 'windVelocity', 'temperatureAtOne', 'temperatureAtThirty']
 #Reading in testdata
 testDataFileName = "C:/Users/steel/Atom_Python/SO2RegressionModel/TESTING_DATA.txt"
 testData= statsModel.readData(testDataFileName)
-testData3F = testData.drop(['wind.direction', 'time.of.day', 'day.index', 'temperature.30'], axis = 1)
+testData3F = testData.drop(['wind.direction', 'time.of.day', 'day.index'], axis = 1)
 outputFileName = "C:/Users/steel/Atom_Python/SO2RegressionModel/PREDICTED_DATA.txt"
 
 #Multiple Regression Analysis
-data = dataFrame.drop(['windDirection', 'timeOfDay', 'dayIndex'], axis = 1)
-statsModel.runMultipleRegressionAnalysis(data)
+statsModel.runMultipleRegressionAnalysis(trainData3F)
 #Prediction Testing
 trainDataWithoutDep = trainData3F.drop(['so2'], axis = 1)
 predictionValuesSO2 = statsModel.runPrediction(trainDataWithoutDep, trainData3F, testData3F)
